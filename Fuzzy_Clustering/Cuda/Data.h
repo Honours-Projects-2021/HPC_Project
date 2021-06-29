@@ -15,6 +15,8 @@ class Data{
         int numCols;
         string location;
         vector<vector<double>> data;
+        vector<double> flatD;
+        
 
         void setNumCols();
         void setNumRows();
@@ -26,17 +28,33 @@ class Data{
         Data(string loc);
         void display();
         vector<vector<double>> getData();
-
-
+        int getNumRows();
+        int getNumCols();
+        void flat();
+        vector<double> getFlat();
 
 
 };
+
+void Data::flat(){
+    for(int i = 0; i < numRows; i++){
+        for(int j = 0; j < numCols; j++){
+            flatD.push_back(data.at(i).at(j));
+        }
+    }
+   
+}
+
+vector<double> Data::getFlat(){
+    return flatD;
+}
 
 Data::Data(string loc){
     location = loc;
     read();
     setNumCols();
     setNumRows();
+    flat();
 }
 
 void Data::display(){
@@ -107,4 +125,12 @@ vector<vector<double>> Data::getData(){
     return data;
 }
 
+int Data::getNumCols(){
+    return numCols;
+}
+
+
+int Data::getNumRows(){
+    return numRows;
+}
 #endif
