@@ -56,11 +56,6 @@ void Data::read(){
 
     fstream inputFile;
     inputFile.open(location,ios::in);
-
-    if(!inputFile){
-        cout<<"can't find anything here\n";
-        exit;
-    }
     
     int controller = 0;
 
@@ -72,7 +67,7 @@ void Data::read(){
         vector<double> vec;
         getline(inputFile , line);
        
-        if(controller == 0) {
+        if(controller == 0 || line == "" || line == " ") {
             controller ++;
             continue;
         }

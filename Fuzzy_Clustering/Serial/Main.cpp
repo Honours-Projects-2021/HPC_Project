@@ -13,13 +13,19 @@ using namespace std;
 
 int main(){
 
-    Data d = Data();
+    Data d = Data("../Utils/wine-clustering.csv");
+    Data w = Data("../Utils/weights.csv");
+    // w.display();
     // d.display();
-    Fuzzy f = Fuzzy(Data().getData(),3,2);
+    Fuzzy f = Fuzzy(d.getData(),w.getData(),3,2);
 
 
     f.display_weights();
+    f.run_fuzzy_c_means(10);
     cout<<endl<<"==========================================================================================="<<endl;
     f.display_weights();
+    cout<<endl<<"==========================================================================================="<<endl;
+    cout<<endl<<"==========================================================================================="<<endl;
+
     return 0;
 }
