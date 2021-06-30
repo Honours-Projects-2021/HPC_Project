@@ -21,12 +21,13 @@ class Util{
 };
 
 double Util::Round(double c){
-    return round(c*100000)/100000;
+    // return round(c*100000)/100000;
+    return c;
 }
 
 vector<double> Util::scalar_multiply(double c, vector<double> x){
     for(int i = 0; i < x.size(); i++){
-        x.at(i) = Round(x.at(i)*c);
+        x.at(i) = x.at(i)*c;
     }
     return x;
 }
@@ -43,7 +44,7 @@ double Util::distance(vector<double> x1, vector<double> x2){
 vector<double> Util::vector_addition(vector<double> x1, vector<double> x2){
     vector<double> vec;
     for(int i = 0; i < x1.size(); i++){
-        vec.push_back(Round(Round(x1.at(i) + x2.at(i))));
+        vec.push_back((Round(x1.at(i) + x2.at(i))));
     }
     return vec;
 }

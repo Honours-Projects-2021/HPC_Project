@@ -71,21 +71,13 @@ void Fuzzy::init_weights(){
     }
 }
 
-void Fuzzy::init_centroids(  ){
+void Fuzzy::init_centroids(){
 
     for(int i = 0; i < numClusters; i++){
-        double denominator = pow(weights.at(0).at(i),fMeasure);
-        vector<double> cluster = data.at(0);
-        
-
-        for(int x = 1; x < data.size(); x++){
-            double w = Util().Round(pow(weights.at(x).at(i),fMeasure));
-            denominator += w;
-            cluster = Util().vector_addition(cluster, Util().scalar_multiply(w,data.at(x)));
-        }
-
-        clusters.push_back(Util().scalar_multiply((double)(1/denominator) , cluster));
+        vector<double> cluster = data.at(0);    
+        clusters.push_back(Util().scalar_multiply(0 , cluster));
     }
+
 }
 
 
@@ -98,8 +90,8 @@ void Fuzzy::compute_centroids(  vector<vector<double>> *Cent  ){
         
 
         for(int x = 1; x < data.size(); x++){
-            double w = Util().Round(pow(weights.at(x).at(i),fMeasure));
-            denominator += Util().Round(w);
+            double w = pow(weights.at(x).at(i),fMeasure);
+            denominator += w;
             cluster = Util().vector_addition(cluster, Util().scalar_multiply(w,data.at(x)));
         }
 
@@ -116,10 +108,11 @@ void Fuzzy::compute_weights(vector<vector<double>> *W){
             for(int k = 0; k < numClusters; k++){
                 double numerator = Util().distance(data.at(i), clusters.at(j));
                 double denominator = Util().distance(data.at(i), clusters.at(k));
+                
                 w += pow((numerator/denominator) , (2/(fMeasure-1)));
             }
             // cout<<weights.at(i).at(j)<< " "<<1/w << "\n";
-            vec.push_back(round((double)(1/w)*r)/r);
+            vec.push_back((double)(1/w));
         }
             W->at(i) = vec;
     }
@@ -130,7 +123,7 @@ void Fuzzy::compute_weights(vector<vector<double>> *W){
 void Fuzzy::display_weights(){
     for(int i = 0; i < 5; i++){
         for(int j = 0; j < weights.at(0).size(); j++){
-            cout<< weights.at(i).at(j)<< " ";
+            printf("%.5f ",weights.at(i).at(j));
         }
         cout<<"\t\t----------- Data point number :\t\t"<<i+1<<endl;
     }
