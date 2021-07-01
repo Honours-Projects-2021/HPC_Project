@@ -2,6 +2,8 @@
 #define FUZZY
 
 #include <cmath>
+#include <cstdio>
+#include <driver_types.h>
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -32,6 +34,7 @@ class Fuzzy{
         void compute_centroids(vector<vector<double>> *Cent );
         void compute_weights(vector<vector<double>> *W);
         void display_weights();
+        void display_data();
         void display_centroids();
         void run_fuzzy_c_means(int epochs);
 
@@ -83,19 +86,29 @@ void Fuzzy::init_centroids(){
 
 // Computations
 void Fuzzy::compute_centroids(  vector<vector<double>> *Cent  ){
-
+    init_weights();
     for(int i = 0; i < numClusters; i++){
-        double denominator = pow(weights.at(0).at(i),fMeasure);
+        // double w = pow(weights.at(0).at(i),fMeasure);
+        double denominator = 0;
         vector<double> cluster = data.at(0);
         
+        
 
-        for(int x = 1; x < data.size(); x++){
+        for(int x = 0; x < data.size(); x++){
             double w = pow(weights.at(x).at(i),fMeasure);
             denominator += w;
-            cluster = Util().vector_addition(cluster, Util().scalar_multiply(w,data.at(x)));
+            // cluster = Util().vector_addition(cluster, Util().scalar_multiply(w,data.at(x)));
+            
+            for(int k = 0; k < data.at(0).size(); k++){
+                Cent->at(i).at(k) = Cent->at(i).at(k) + w*data[x][k];
+            }
+
         }
 
-        Cent->at(i) = Util().scalar_multiply((double)(1/denominator) , cluster);
+        for(int k = 0; k < data.at(0).size(); k++){
+            Cent->at(i).at(k) = Cent->at(i).at(k)*(1/denominator);
+        }
+        // Cent->at(i) = Util().scalar_multiply((double)(1/denominator) , cluster);
     }
 }
 
@@ -128,15 +141,25 @@ void Fuzzy::display_weights(){
         cout<<"\t\t----------- Data point number :\t\t"<<i+1<<endl;
     }
 }
+void Fuzzy::display_data(){
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < data.at(0).size(); j++){
+            printf("%.5f ",data.at(i).at(j));
+        }
+        cout<<"\t\t----------- Data point number :\t\t"<<i+1<<endl;
+    }
+}
 
 void Fuzzy::display_centroids(){
     for(int i = 0; i < numClusters; i++){
         cout << "cluster "<<i+1<<" [ ";
         for(int j = 0; j < clusters.at(0).size(); j++){
             if(j != clusters.at(i).size()-1)
-                cout << clusters.at(i).at(j) << ", "; 
+                // cout << clusters.at(i).at(j) << ", ";
+                printf("%f, ",clusters[i][j]); 
             else
-                cout << clusters.at(i).at(j) << " ]" << endl; 
+                // cout << clusters.at(i).at(j) << " ]" << endl; 
+                printf("%f ]\n",clusters.at(i).at(j));
 
         }
     }
