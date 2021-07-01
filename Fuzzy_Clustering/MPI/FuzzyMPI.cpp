@@ -82,8 +82,9 @@ int main(int argc, char *argv[]){
         }
         if(rank != MASTER)
             MPI_Send( &(centroids[rank*numFeatures]) , numFeatures , MPI_DOUBLE , MASTER , 1 , MPI_COMM_WORLD);
-        else if(numProc > 1){
-            for(int i = 1; i < CENTROIDS; i++){
+        else {
+            int index = (numProc > 2)?CENTROIDS:numProc;
+            for(int i = 1; i < index; i++){
                 MPI_Recv( &(centroids[i*numFeatures]) , numFeatures , MPI_DOUBLE , i , 1 , MPI_COMM_WORLD , &status);
             }
         }
@@ -91,12 +92,59 @@ int main(int argc, char *argv[]){
     MPI_Bcast( &(centroids[0]) , CENTROIDS*numFeatures , MPI_DOUBLE , MASTER , MPI_COMM_WORLD);    
     MPI_Barrier( MPI_COMM_WORLD);
     
-    if(rank == numProc-1)
-        for(int i =0; i < 3*numFeatures; i++){
-                printf("%f --- " , centroids[i]);
-            if((i+1)%numFeatures == 0)
-                printf("\n");
+/*=========================================================================================================================*/
+/*=========================================================================================================================*/
+/*=========================================================================================================================*/
+    int myrows = d.getNumRows()/numProc;
+    int chunksize = myrows;
+    int idx = rank*myrows;
+    if(rank == numProc-1){
+        chunksize += d.getNumRows() - myrows*numProc;
+    }
+
+    printf("ID: %d, my number of rows is %d, my index is %d, my chuncksize is %d\n",rank, myrows,idx,chunksize);
+
+    for(int i = idx; i < idx + chunksize; i++){
+        
+        for(int j = 0; j < CENTROIDS; j++){
+            double w = 0;
+            for(int k = 0; k < CENTROIDS; k++){
+                double numerator = 0;
+                double denominator = 0;
+
+                for(int l = 0; l < d.getNumCols(); l++){
+                    numerator += pow(data[i*d.getNumCols()+l]-centroids[j*d.getNumCols()+l],2);
+                    denominator += pow(data[i*d.getNumCols()+l]-centroids[k*d.getNumCols()+l],2);
+                }
+                numerator = sqrt(numerator);
+                denominator = sqrt(denominator);
+                w += pow((numerator/denominator),2/(FMEASURE-1));
+            }
+            weights[i*CENTROIDS+j] = 1/w;
         }
+    }
+
+    
+    MPI_Barrier( MPI_COMM_WORLD);
+
+    if(rank != MASTER)
+            MPI_Send( &(weights[idx]) , chunksize , MPI_DOUBLE , MASTER , 1 , MPI_COMM_WORLD);
+    else {
+        for(int i = 1; i < numProc-1; i++){
+            MPI_Recv( &(weights[i*myrows]) , chunksize , MPI_DOUBLE , i , 1 , MPI_COMM_WORLD , &status);
+        } 
+        MPI_Recv( &(weights[(numProc-1)*myrows]) , chunksize+d.getNumRows() - myrows*numProc , MPI_DOUBLE , numProc-1 , 1 , MPI_COMM_WORLD , &status);
+    }
+
+    MPI_Bcast( &(weights[0]) , CENTROIDS*d.getNumRows() , MPI_DOUBLE , MASTER , MPI_COMM_WORLD);    
+    
+    if(rank == MASTER)
+        for(int i = 0; i < 100*CENTROIDS; i++){
+                printf("  %.3f --- " , weights[i]);
+            if((i+1)%CENTROIDS == 0)
+                printf("             %d\n",i/3);
+        }
+
     // printf("Hello from task %d on %s!\n",rank,hostname);
     // if(rank == 0){
     //     // printf("MASTER: Number of MPI tasks is: %d\n",numProc);

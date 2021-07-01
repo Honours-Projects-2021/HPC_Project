@@ -2,15 +2,11 @@
 #define FUZZY
 
 #include <cmath>
-#include <cstdio>
-#include <driver_types.h>
-#include <fstream>
 #include <iostream>
 #include <vector>
 #include <stdio.h>
-#include<random>
-#include <ctime>
 #include "../Utils/Util.h"
+#include "Data.h"
 using namespace std;
 
 class Fuzzy{
@@ -21,8 +17,10 @@ class Fuzzy{
         double fMeasure; 
         int numDataPoints;
         vector<vector<double>> clusters;
-        vector<vector<double>> weights;
-        vector<vector<double>> data;
+        vector<vector<double>> weights=Data("../Utils/weights.csv").getData();
+        vector<vector<double>> data = Data("../Utils/wine-clustering.csv").getData();
+
+        vector<double> clus;
         
 
     public:
@@ -31,19 +29,21 @@ class Fuzzy{
 
         void init_weights();
         void init_centroids();
-        void compute_centroids(vector<vector<double>> *Cent );
+        void compute_centroids(vector<vector<double>> Cent );
         void compute_weights(vector<vector<double>> *W);
         void display_weights();
         void display_data();
         void display_centroids();
         void run_fuzzy_c_means(int epochs);
 
+        void c();
+
 };
 
 
 // Constructors
 Fuzzy::Fuzzy(vector<vector<double>> d, int c, double m){
-    data = d;
+    // data = d;
     numClusters = c;
     fMeasure = m;
     numDataPoints = d.size();
@@ -53,13 +53,13 @@ Fuzzy::Fuzzy(vector<vector<double>> d, int c, double m){
 }
 
 Fuzzy::Fuzzy(vector<vector<double>> d,vector<vector<double>> w, int c, double m){
-    data = d; // Set the dataset
-    weights = w; // Set the weights
+    // data = d; // Set the dataset
+    // weights = w; // Set the weights
+    init_centroids(); // initialize centroids
     numClusters = c; // number of clusters
     fMeasure = m; // fuzzy measure usually equal to 2
     numDataPoints = d.size(); // number of data point
     srand(time(0)); // Random seed
-    init_centroids(); // initialize centroids
 }
 
 
@@ -77,36 +77,72 @@ void Fuzzy::init_weights(){
 void Fuzzy::init_centroids(){
 
     for(int i = 0; i < numClusters; i++){
-        vector<double> cluster = data.at(0);    
-        clusters.push_back(Util().scalar_multiply(0 , cluster));
+        vector<double> cluster;    
+        for(int j = 0; j < data.at(0).size(); j++){
+            cluster.push_back(0);
+        }
+        clusters.push_back(cluster);
     }
 
+    for(int i = 0; i < 3*13; i++){
+        clus.push_back(0);
+    }
 }
 
+void Fuzzy:: c(){
+    init_centroids();
+    vector<double> d = Data("../Utils/wine-clustering.csv").getFlat();
+    vector<double> we = Data("../Utils/weights.csv").getFlat();
+
+    for(int i = 0; i < numClusters; i++){
+         double denominator = 0;
+        
+        for(int x = 0; x < numDataPoints; x++){
+            double w = pow(we[x*numClusters + i],fMeasure);
+            denominator = denominator + w;
+
+            for(int k = i*13; k < (i+1)*13; k++){
+                clus[k] = clus[k] + w*d[x*13 + k];
+            }
+            // cluster = Util().vector_addition(cluster, Util().scalar_multiply(w,data.at(x)));
+        }
+
+
+        for(int k = i*13; k < (i+1)*13; k++){
+            clus[k] = clus[k]*(1/denominator);
+        }
+    }
+
+    for(int i =0; i < 3*13; i++){
+        printf("%f --- " , clus[i]);
+        if((i+1)%13 == 0)
+            printf("\n");
+    }   
+}
 
 // Computations
-void Fuzzy::compute_centroids(  vector<vector<double>> *Cent  ){
+void Fuzzy::compute_centroids(  vector<vector<double>> Cent  ){
     init_weights();
     for(int i = 0; i < numClusters; i++){
         // double w = pow(weights.at(0).at(i),fMeasure);
-        double denominator = 0;
         vector<double> cluster = data.at(0);
         
-        
+        double denominator = 0;
+        double w = 0;
 
         for(int x = 0; x < data.size(); x++){
-            double w = pow(weights.at(x).at(i),fMeasure);
-            denominator += w;
+            w = pow(weights.at(x).at(i),fMeasure);
+            denominator = denominator + w;
             // cluster = Util().vector_addition(cluster, Util().scalar_multiply(w,data.at(x)));
             
             for(int k = 0; k < data.at(0).size(); k++){
-                Cent->at(i).at(k) = Cent->at(i).at(k) + w*data[x][k];
+                clusters[i][k] += w*data[x][k];
             }
 
         }
 
         for(int k = 0; k < data.at(0).size(); k++){
-            Cent->at(i).at(k) = Cent->at(i).at(k)*(1/denominator);
+            clusters[i][k] *= (1/denominator);
         }
         // Cent->at(i) = Util().scalar_multiply((double)(1/denominator) , cluster);
     }
@@ -169,7 +205,8 @@ void Fuzzy::display_centroids(){
 // Run algorithm
 void Fuzzy::run_fuzzy_c_means(int epochs){
     for(int i = 0; i < epochs; i++){
-        compute_centroids(&clusters);
+        
+        compute_centroids(weights);
         compute_weights(&weights);
 
         // cout<<endl<<"= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="<<endl<<endl;

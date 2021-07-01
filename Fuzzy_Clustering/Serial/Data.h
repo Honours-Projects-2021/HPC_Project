@@ -20,12 +20,17 @@ class Data{
         void setNumRows();
         void split(vector<double> &vec , string str);
         void read();
-
+        vector<double>flatD;
 
     public:
         Data(string loc);
         void display();
+        int getNumRows();
+        int getNumCols();
+        void flat();
         vector<vector<double>> getData();
+        vector<double> getFlat();
+
 
 
 
@@ -39,6 +44,19 @@ Data::Data(string loc){
     setNumRows();
 }
 
+void Data::flat(){
+    for(int i = 0; i < numRows; i++){
+        for(int j = 0; j < numCols; j++){
+            flatD.push_back(data.at(i).at(j));
+        }
+    }
+   
+}
+
+vector<double> Data::getFlat(){
+    flat();
+    return flatD;
+}
 void Data::display(){
     int n = numRows;
     int m = numCols;
@@ -94,7 +112,13 @@ void Data::setNumCols(){
 void Data::setNumRows(){
     numRows = data.size();
 }
+int Data::getNumCols(){
+    return numCols ;
+}
 
+int Data::getNumRows(){
+    return numRows = data.size();
+}
 void Data::split(vector<double> &vec, string str){
 
     int start = 0;
