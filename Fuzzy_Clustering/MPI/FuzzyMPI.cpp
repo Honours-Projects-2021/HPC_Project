@@ -20,6 +20,9 @@ void init_centroids(vector<double> *clusters ,int size ){
 
 }
 
+void displayCentroids(vector<double> cent, int NumFeatures);
+void displayWeights(vector<double> weights, int n);
+
 
 int main(int argc, char *argv[]){
 
@@ -141,14 +144,35 @@ int main(int argc, char *argv[]){
 
     // End timer here 
     if(rank == 0){
-        for(int i = 0; i < 100*CENTROIDS; i++){
-            printf("%f --- " , weights[i]);
-            
-            if((i+1)%CENTROIDS == 0){
-                printf("             %d\n",i/CENTROIDS);
-            }    
-        }
+        
+        displayCentroids(centroids,numFeatures);
     }
     MPI_Finalize();
     return 0;
+}
+void displayCentroids(vector<double> cent, int NumFeatures){
+    for(int i = 0; i < CENTROIDS; i++){
+        cout << "cluster "<<i+1<<" [ ";
+        for(int j = 0; j < NumFeatures; j++){
+            if(j != NumFeatures-1)
+                printf("%f, ",cent[i*CENTROIDS +j]); 
+            else
+                printf("%f ]\n",cent[i*CENTROIDS +j]);
+
+        }
+    }
+}
+
+void displayWeights(vector<double> weights, int n){
+    for(int i = 0; i < n; i++){
+        cout << "weight for data-point "<<i+1<<" : [ ";
+        for(int j = 0; j < CENTROIDS; j++){
+            if(j != CENTROIDS-1)
+                printf("%f, ",weights[i*CENTROIDS +j]); 
+            else
+                printf("%f ]\n",weights[i*CENTROIDS +j]);
+
+        }
+    }
+
 }
