@@ -10,7 +10,7 @@
 #define MASTER 0
 #define CENTROIDS 3
 #define FMEASURE 2
-#define EPOCHS 3
+#define EPOCHS 1
 using namespace std;
 
 void init_centroids(vector<double> *clusters ,int size ){
@@ -57,13 +57,13 @@ int main(int argc, char *argv[]){
 
     
     
-        if(rank < CENTROIDS){
-            for(int z = 0; z < EPOCHS; z++){
-            for(int k = rank*numFeatures; k < (rank+1)*numFeatures; k++){
-                centroids[k] = 0;
-            }
-            for(int i = rank; i < CENTROIDS; i++){
-                double denominator = 0;
+        for(int z = 0; z < EPOCHS; z++){
+            if(rank < CENTROIDS){
+                for(int k = rank*numFeatures; k < (rank+1)*numFeatures; k++){
+                    centroids[k] = 0;
+                }
+                for(int i = rank; i < CENTROIDS; i++){
+                    double denominator = 0;
                 
                 for(int x = 0; x < numRecords; x++){
                     double w = pow(weights[x*CENTROIDS+i],FMEASURE);
@@ -90,15 +90,15 @@ int main(int argc, char *argv[]){
                 }
             }
         }
-        MPI_Bcast( &(centroids[0]) , CENTROIDS*numFeatures , MPI_DOUBLE , MASTER , MPI_COMM_WORLD);    
         MPI_Barrier( MPI_COMM_WORLD);
+        MPI_Bcast( &(centroids[0]) , CENTROIDS*numFeatures , MPI_DOUBLE , MASTER , MPI_COMM_WORLD);    
         
     /*=========================================================================================================================*/
     /*=========================================================================================================================*/
     /*=========================================================================================================================*/
         
 
-        // printf("ID: %d, my number of rows is %d, my index is %d, my chuncksize is %d\n",rank, myrows,idx,chunksize);
+        printf("ID: %d, my number of rows is %d, my index is %d, my chuncksize is %d\n",rank, myrows,idx,chunksize);
 
         for(int i = idx; i < idx + chunksize; i++){
             
