@@ -9,7 +9,7 @@
 #include "../Utils/Util.h"
 #include "Fuzzy.h"
 
-#define EPOCHS 50
+#define EPOCHS 500
 #define CLASSES 3
 #define FMEASURE 3
 

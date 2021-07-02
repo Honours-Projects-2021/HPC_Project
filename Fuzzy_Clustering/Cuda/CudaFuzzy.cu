@@ -6,14 +6,14 @@
 #include<random>
 #include <ctime>
 
+#include "./inc/common/book.h"
 #include <cuda_runtime.h>
 #include <helper_functions.h>
 #include <helper_cuda.h>
-#include "../inc/common/book.h"
 #include "Data.h"
 
 #define NUMCENTS 3
-#define FMEASURE 2
+#define FMEASURE 3
 #define EPOCHS  500
 
 using namespace std;
@@ -21,6 +21,33 @@ using namespace std;
 // This function rounds off to 5 decimal places
 __device__ double Round(double c){
     return round(c*100000)/100000;
+}
+
+void displayCentroids(double* cent, int NumFeatures){
+    for(int i = 0; i < NUMCENTS; i++){
+        cout << "cluster "<<i+1<<" [ ";
+        for(int j = 0; j < NumFeatures; j++){
+            if(j != NumFeatures-1)
+                printf("%f, ",cent[i*NUMCENTS +j]); 
+            else
+                printf("%f ]\n",cent[i*NUMCENTS +j]);
+
+        }
+    }
+}
+
+void displayWeights(double* weights, int n){
+    for(int i = 0; i < n; i++){
+        cout << "weight for data-point "<<i+1<<" : [ ";
+        for(int j = 0; j < NUMCENTS; j++){
+            if(j != NUMCENTS-1)
+                printf("%f, ",weights[i*NUMCENTS +j]); 
+            else
+                printf("%f ]\n",weights[i*NUMCENTS +j]);
+
+        }
+    }
+
 }
 
 
@@ -155,14 +182,15 @@ int main(){
     checkCudaErrors(cudaMemcpy(weights, deviceWeights ,  weightSize, cudaMemcpyDeviceToHost));
 
 
-    for(int i = 0; i < 5; i++){
-        for(int j = 0; j < 3; j++){
-            printf("%.5f " ,weights[i*NUMCENTS + j]);
-        }
-        printf("\n");
-    }
-    printf("\n");
+    // for(int i = 0; i < 100; i++){
+    //     for(int j = 0; j < 3; j++){
+    //         printf("%.5f " ,weights[i*NUMCENTS + j]);
+    //     }
+    //     printf("\n");
+    // }
+    // printf("\n");
     
+    displayCentroids(centroids,dataColumns);
     // free acquried Device memory
     checkCudaErrors(cudaFree(deviceCentroids));
     checkCudaErrors(cudaFree(deviceWeights));
@@ -171,17 +199,6 @@ int main(){
     // Free acquired Host memory
     free(centroids);
     free(weights);
-
-
-
-
-
-    
-        
-    
-   
-
-
 
 
     return 0;
