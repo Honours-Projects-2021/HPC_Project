@@ -14,6 +14,7 @@
 
 #define NUMCENTS 3
 #define FMEASURE 2
+#define EPOCHS 3
 
 using namespace std;
 
@@ -36,14 +37,14 @@ __global__ void computeCentroids(double *data, double *weights, double *centroid
         denominator = denominator + w;
 
         for(int k = i*dCols; k < (i+1)*dCols; k++){
-            centroids[k] = centroids[k] + w*data[x*dCols + k];
+            centroids[k] = round((centroids[k] + w*data[x*dCols + k])*1000)/1000;
         }
         // cluster = Util().vector_addition(cluster, Util().scalar_multiply(w,data.at(x)));
     }
 
 
     for(int k = i*dCols; k < (i+1)*dCols; k++){
-        centroids[k] = centroids[k]*(1/denominator);
+        centroids[k] = round((centroids[k]*(1/denominator))*1000)/1000;
     }
 
 
@@ -72,7 +73,7 @@ __global__ void computeWeights(double *data, double *weights, double *centroids,
         w += pow((numerator/denominator),(2/(fMeasure-1)));
     }
     if(i < dRows)
-    weights[i*numCents + j] = 1/w;
+    weights[i*numCents + j] = round((1/w)*1000)/1000;
 }
 
 void initCentroids(double *cents, int numCols){
@@ -136,7 +137,7 @@ int main(){
     dim3 Wblock(NUMCENTS);
     dim3 Wthreads(dataRows);
 
-    for(int i = 0; i < 50; i++){
+    for(int i = 0; i < EPOCHS; i++){
         computeCentroids<<<Cblock,Cthreads>>>(deviceData, deviceWeights, deviceCentroids, NUMCENTS, dataRows, dataColumns , FMEASURE);
         computeWeights<<<Wblock,Wthreads>>>(deviceData, deviceWeights, deviceCentroids, weightCols, dataRows, dataColumns , FMEASURE);
     }
@@ -148,11 +149,23 @@ int main(){
     // for(int i = 175*weightCols; i < dataRows*weightCols; i = i+1){
     //     printf("%.5f    %d\n",weights[i],i-177);
     // }
-    for(int i = 0; i < 5; i++){
-        for(int j = 0; j < 3; j++){
-            printf("%.5f " ,weights[i*NUMCENTS + j]);
-        }
-        printf("\n");
+    // for(int i = 0; i < 5; i++){
+    //     for(int j = 0; j < 3; j++){
+    //         printf("%.5f " ,centroids[i*dataColumns + j]);
+    //     }
+    //     printf("\n");
+    // }
+
+    // for(int i =0; i < 3*dataColumns; i++){
+    //     printf("%f --- " , centroids[i]);
+    // if((i+1)%dataColumns == 0)
+    //     printf("\n");    
+    // }
+
+    for(int i =0; i < 3*13; i++){
+        printf("%f --- " , centroids[i]);
+        if((i+1)%13 == 0)
+            printf("              %d\n",i/13);
     }
     printf("\n");
     
