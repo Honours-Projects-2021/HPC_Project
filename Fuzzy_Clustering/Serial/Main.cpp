@@ -15,7 +15,7 @@ int main(){
 
     Data d = Data("../Utils/wine-clustering.csv");
     Data w = Data("../Utils/weights.csv");
-    // w.display();
+    // w.display(); 
     // d.display();
     Fuzzy f = Fuzzy(d.getData(),w.getData(),3,2);
 

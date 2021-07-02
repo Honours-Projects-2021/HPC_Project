@@ -122,7 +122,7 @@ void Fuzzy:: c(){
 
 // Computations
 void Fuzzy::compute_centroids(  vector<vector<double>> Cent  ){
-    init_weights();
+    // init_weights();
     for(int i = 0; i < numClusters; i++){
         // double w = pow(weights.at(0).at(i),fMeasure);
         vector<double> cluster = data.at(0);
@@ -208,9 +208,6 @@ void Fuzzy::run_fuzzy_c_means(int epochs){
         
         compute_centroids(weights);
         compute_weights(&weights);
-
-        // cout<<endl<<"= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="<<endl<<endl;
-        // display_centroids();
     }
 }
 
