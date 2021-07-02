@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <stdio.h>
 #include <vector>
@@ -9,8 +8,8 @@
 
 #define MASTER 0
 #define CENTROIDS 3
-#define FMEASURE 2
-#define EPOCHS 1
+#define FMEASURE 3
+#define EPOCHS 50
 using namespace std;
 
 void init_centroids(vector<double> *clusters ,int size ){
@@ -56,31 +55,37 @@ int main(int argc, char *argv[]){
     }
 
     
-    
-        for(int z = 0; z < EPOCHS; z++){
-            if(rank < CENTROIDS){
-                for(int k = rank*numFeatures; k < (rank+1)*numFeatures; k++){
+
+
+    // Running the algorithm here... Time from here
+    for(int z = 0; z < EPOCHS; z++){
+        if(rank < CENTROIDS){
+            
+           
+
+            for(int i = rank; i < CENTROIDS; ++i){
+                 for(int k = i*numFeatures; k < (i+1)*numFeatures; k++){
                     centroids[k] = 0;
                 }
-                for(int i = rank; i < CENTROIDS; i++){
-                    double denominator = 0;
                 
+
+                double denominator = 0;
+            
                 for(int x = 0; x < numRecords; x++){
-                    double w = pow(weights[x*CENTROIDS+i],FMEASURE);
+                    double w = pow(weights[x*CENTROIDS+rank],FMEASURE);
                     denominator += w;
 
                     for(int k = i*numFeatures; k < (i+1)*numFeatures; k++){
-                        centroids[k] = round((centroids[k] + w*data[x*numFeatures +k])*1000)/1000;
-                       
-
+                        centroids[k] = (centroids[k] + w*data[x*numFeatures +k]);
                     }                
                 }
 
                 for(int k = i*numFeatures; k < (i+1)*numFeatures; k++){
-                    centroids[k] = round((centroids[k]*(1/denominator)*1000))/1000;
+                    centroids[k] = (centroids[k]*(1/denominator));
                 }
             
             }
+
             if(rank != MASTER)
                 MPI_Send( &(centroids[rank*numFeatures]) , numFeatures , MPI_DOUBLE , MASTER , 1 , MPI_COMM_WORLD);
             else if (numProc > 1){
@@ -93,12 +98,12 @@ int main(int argc, char *argv[]){
         MPI_Barrier( MPI_COMM_WORLD);
         MPI_Bcast( &(centroids[0]) , CENTROIDS*numFeatures , MPI_DOUBLE , MASTER , MPI_COMM_WORLD);    
         
-    /*=========================================================================================================================*/
-    /*=========================================================================================================================*/
-    /*=========================================================================================================================*/
+        /*=========================================================================================================================*/
+        /*=========================================================================================================================*/
+        /*=========================================================================================================================*/
         
 
-        printf("ID: %d, my number of rows is %d, my index is %d, my chuncksize is %d\n",rank, myrows,idx,chunksize);
+        // printf("ID: %d, my number of rows is %d, my index is %d, my chuncksize is %d\n",rank, myrows,idx,chunksize);
 
         for(int i = idx; i < idx + chunksize; i++){
             
@@ -116,12 +121,9 @@ int main(int argc, char *argv[]){
                     denominator = sqrt(denominator);
                     w += pow((numerator/denominator),2/(FMEASURE-1));
                 }
-                weights[i*CENTROIDS+j] = round((1/w)*1000)/1000;
+                weights[i*CENTROIDS+j] = 1/w;
             }
         }
-
-        
-        MPI_Barrier( MPI_COMM_WORLD);
 
         if(rank != MASTER)
                 MPI_Send( &(weights[idx*w.getNumCols()]) , chunksize*w.getNumCols() , MPI_DOUBLE , MASTER , 1 , MPI_COMM_WORLD);
@@ -136,21 +138,17 @@ int main(int argc, char *argv[]){
         MPI_Barrier( MPI_COMM_WORLD);
         
     }
-    if(rank == 0)
-        for(int i = 0; i < 13*CENTROIDS; i++){
-                printf("%f --- " , centroids[i]);
-            if((i+1)%13 == 0)
-                printf("             %d\n",i/13);
+
+    // End timer here 
+    if(rank == 0){
+        for(int i = 0; i < 100*CENTROIDS; i++){
+            printf("%f --- " , weights[i]);
+            
+            if((i+1)%CENTROIDS == 0){
+                printf("             %d\n",i/CENTROIDS);
+            }    
         }
-        
-
-    // printf("Hello from task %d on %s!\n",rank,hostname);
-    // if(rank == 0){
-    //     // printf("MASTER: Number of MPI tasks is: %d\n",numProc);
-    // }
+    }
     MPI_Finalize();
-
-    //
-
     return 0;
 }
