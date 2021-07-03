@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1625332736 "/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.tex" "/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.pdf" "template" 1625332736
+["pdflatex"] 1625342798 "/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.tex" "/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.pdf" "template" 1625342799
   "/etc/texmf/web2c/texmf.cnf" 1601192507 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.aux" 1625332736 1341 4c4b7e70fca7c4a119f86678c148c243 ""
+  "/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.aux" 1625342799 2654 eda3ad7469e5989cc4ac25d97ab18a8f ""
   "/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.tex" 1625325635 2869 8da587a0f0581585e2ed3c3867b99019 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -226,15 +226,17 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1581979058 38841 ce3692aa899bb693b90b87eaa5d4d84e ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1603660691 4770781 1ed1abab22da9c3e2cc82e4db562318b ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1603660760 8261000 7a8f146603b8fbc7cbcaf5623d1840b3 ""
-  "assignment1_report.tex" 1625332735 3552 12f4182eabeb00aaf9b57869c393dd52 ""
-  "template.aux" 1625332736 1341 4c4b7e70fca7c4a119f86678c148c243 "pdflatex"
-  "template.out" 1625332736 295 2d34a4324c1ccfdcd3e82a7a205ac3d9 "pdflatex"
+  "assignment1_report.tex" 1625342797 12971 482d816f3b9dd375b5f2c7372fa17cfa ""
+  "template.aux" 1625342799 2654 eda3ad7469e5989cc4ac25d97ab18a8f "pdflatex"
+  "template.out" 1625342799 1026 4908c3383529c5158748b1b8a524a5ea "pdflatex"
   "template.tex" 1625325635 2869 8da587a0f0581585e2ed3c3867b99019 ""
+  "template.toc" 1625342799 1314 302dbcfca103b0e8c19b42cde139a6a2 "pdflatex"
   "witslogo_h.png" 1459237636 148569 3062b1952350ad98b03b4c5a36100e33 ""
   (generated)
+  "/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.log"
+  "template.pdf"
+  "template.log"
   "template.out"
   "template.aux"
-  "template.pdf"
-  "/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.log"
-  "template.log"
+  "template.toc"
   "/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.pdf"

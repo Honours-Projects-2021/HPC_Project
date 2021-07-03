@@ -24,10 +24,14 @@ void initClusters(Data d, vector<vector<double>> *clusters){
 
 void displayClusters(vector<vector<double>> clusters){
     for(int i = 0; i < clusters.size(); i++){
+        cout<<"cluster " << i+1<<" [ ";
         for(int j = 0; j < clusters.at(i).size(); j++){
-            printf("%f   ",clusters.at(i).at(j));
+            if(j != clusters.at(i).size()-1)
+                printf("%f, ",clusters.at(i).at(j));
+            else
+                printf("%f ]\n",clusters.at(i).at(j));
         }
-        printf("\n");
+        // printf("\n");
     }
     printf("\n");
 }
