@@ -1,8 +1,5 @@
-run: main.o
-	g++ main.o -o run
-    
-main.o: main.cpp
-	g++ -c main.cpp
-    
+CC=g++
+run:	Main.cpp
+	$(CC) Main.cpp -o run
 clean:
-	rm *.o run
+	rm run
