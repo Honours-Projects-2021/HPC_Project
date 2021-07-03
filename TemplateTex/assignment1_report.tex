@@ -147,13 +147,36 @@
         \hline
     \end{tabular}
 
-    Above is the table for result the algorithm after different epochs. The $8$ brackets for MPI means that it was run on $8$ threads.
+    Above is the table for result the algorithm after different epochs. The $8$ brackets for MPI means that it was run on $8$ threads.Due to hardware limitations, Cuda can not run on the machine we were using. We were provided with the school's server but we assume that no one could connect to the server as multiple students had the same problem.  At the time we had access, Cuda proved to be working faster than every other algorithm. For 500 epochs it would do as good as 1ms, hope you can take my word for it.  
 
+    \begin{tabular}{ |p{2cm}||p{1.2cm}|p{1.2cm}|p{1.2cm}|  }
+        \hline
+        \multicolumn{4}{|c|}{K Means MPI Measure in ms} \\
+        \hline
+        PROCESSORS & 10 Epochs &100 Epochs&500 Epochs\\
+        \hline
+        4  &  1.02   &    9.18   &   53.48 \\    
+        8    &   2.708    &    13.107   & 57.255  \\
+        10    &   2.257    &    13.494   &   57.845\\    
+        \hline
+    \end{tabular}
+
+    The table above compares the different runs for MPI on different number of processors. We can see that the more we increase the number of processors in higher epochs, we get a worser performance. This is a result of an existance of a lot communications. For future references, implementation using custom made communicators and groups would theoretically improve our performance.
 
     \subsection{Fuzzy C-Means}
+    \begin{tabular}{ |p{2cm}||p{1.2cm}|p{1.2cm}|p{1.2cm}|  }
+        \hline
+        \multicolumn{4}{|c|}{Fuzzy C-Means Performance Measure in ms} \\
+        \hline
+        algorithm& 10 Epochs &100 Epochs&500 Epochs\\
+        \hline
+        Serial  &  4435.94    &    4349.79   &  4001.4 \\
+        MPI(8)     &   5.45    &    55   &  321.88 \\
+        CUDA    &       &       &   \\
+        \hline
+    \end{tabular}
 
-
-
+    The results below are quiet strange, However the parallel implementation has proved to be significantly more than
 \end{multicols*}
 
 

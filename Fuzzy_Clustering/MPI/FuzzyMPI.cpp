@@ -9,7 +9,7 @@
 #define MASTER 0
 #define CENTROIDS 3
 #define FMEASURE 3
-#define EPOCHS 500
+#define EPOCHS 10
 using namespace std;
 
 void init_centroids(vector<double> *clusters ,int size ){

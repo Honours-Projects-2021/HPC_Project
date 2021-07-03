@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.10.25)  3 JUL 2021 23:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.10.25)  3 JUL 2021 23:47
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -959,29 +959,65 @@ Underfull \hbox (badness 10000) in paragraph at lines 142--143
 []\T1/ptm/m/n/10 500
  []
 
-[4])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 82.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 82.
- (/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 82.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 82.
-Package rerunfilecheck Info: File `template.out' has not changed.
-(rerunfilecheck)             Checksum: E86868FA2B247890E4CC501428645376;1146.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 82.
- ) 
-Here is how much of TeX's memory you used:
- 23102 strings out of 481239
- 420438 string characters out of 5920376
- 886526 words of memory out of 5000000
- 37796 multiletter control sequences out of 15000+600000
- 593068 words of font info for 133 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 60i,16n,66p,790b,628s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.pdf (6 pages, 207805 bytes).
-PDF statistics:
- 170 PDF objects out of 1000 (max. 8388607)
- 150 compressed objects within 2 object streams
- 26 named destinations out of 1000 (max. 500000)
- 154 words of extra memory for PDF output out of 10000 (max. 10000000)
 
+Overfull \hbox (5.49402pt too wide) in paragraph at lines 156--156
+[]\T1/ptm/m/n/10 PROCESSORS| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--156
+[]\T1/ptm/m/n/10 10
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--156
+[]\T1/ptm/m/n/10 100
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--157
+[]\T1/ptm/m/n/10 500
+ []
+
+/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/assignment1_report.tex:169: Missing \cr inserted.
+<inserted text> 
+                \cr 
+l.169 ...umn{4}{|c|}{F} Performance Measure in ms}
+                                                   \\
+I'm guessing that you meant to end an alignment here.
+
+/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/assignment1_report.tex:170: Misplaced \cr.
+\reserved@c ->\ifnum 0=`{\fi }\cr 
+                                  
+l.170         \hline
+                    
+I can't figure out why you would want to use a tab mark
+or \cr or \span just now. If something like a right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/assignment1_report.tex:170: Misplaced \noalign.
+\hline ->\noalign 
+                  {\ifnum 0=`}\fi \hrule \@height \arrayrulewidth \futurelet...
+l.170         \hline
+                    
+I expect to see \noalign only after the \cr of
+an alignment. Proceed, and I'll ignore this case.
+
+/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/assignment1_report.tex:171: Misplaced alignment tab character &.
+l.171         algorithm&
+                         10 Epochs &100 Epochs&500 Epochs\\
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+/home/beast/Documents/School/Honors/HPC/Project/TemplateTex/assignment1_report.tex:171: Misplaced alignment tab character &.
+l.171         algorithm& 10 Epochs &
+                                    100 Epochs&500 Epochs\\
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\
