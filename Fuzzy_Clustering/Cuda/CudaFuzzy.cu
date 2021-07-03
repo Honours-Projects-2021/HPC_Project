@@ -169,6 +169,12 @@ int main(){
     dim3 Wblock(NUMCENTS);
     dim3 Wthreads(dataRows);
 
+
+    StopWatchInterface *se_timer = NULL;
+    sdkCreateTimer(&se_timer);
+    sdkStartTimer(&se_timer);
+
+
     // Run the algorithm for the number of epochs
     for(int i = 0; i < EPOCHS; i++){
         // Compute the new centroids
@@ -177,6 +183,11 @@ int main(){
         computeWeights<<<Wblock,Wthreads>>>(deviceData, deviceWeights, deviceCentroids, weightCols, dataRows, dataColumns , FMEASURE);
     }
     
+
+    sdkStopTimer(&se_timer);
+    printf("Processing time for Cuda Parallel: %f (ms)\n", sdkGetTimerValue(&se_timer));
+    sdkDeleteTimer(&se_timer);
+
     // copy the results into the respective arrays
     checkCudaErrors(cudaMemcpy(centroids, deviceCentroids ,  centSize, cudaMemcpyDeviceToHost));
     checkCudaErrors(cudaMemcpy(weights, deviceWeights ,  weightSize, cudaMemcpyDeviceToHost));

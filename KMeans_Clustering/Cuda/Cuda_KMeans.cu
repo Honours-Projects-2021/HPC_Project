@@ -144,10 +144,19 @@ int main(){
     dim3 dis_blocks(K);
     dim3 clust_threads(K);
 
+    StopWatchInterface *se_timer = NULL;
+    sdkCreateTimer(&se_timer);
+    sdkStartTimer(&se_timer);
+
     for(int i = 0; i < EPOCHS; i++){
         calcDistances<<<1 , dis_threads>>>(dev_clusters,dev_distances,dev_data,dev_Assigns,cols);
         calcCentroids<<<1 , clust_threads>>>(dev_Assigns, dev_clusters, dev_data, cols,rows);
     }
+
+    sdkStopTimer(&se_timer);
+    printf("Processing time for Cuda Parallel: %f (ms)\n", sdkGetTimerValue(&se_timer));
+    sdkDeleteTimer(&se_timer);
+
     checkCudaErrors(cudaMemcpy(clusterAssigns,dev_Assigns,rows*sizeof(int),cudaMemcpyDeviceToHost));
     checkCudaErrors(cudaMemcpy(distances,dev_distances,K*rows*sizeof(double),cudaMemcpyDeviceToHost));
     checkCudaErrors(cudaMemcpy(clusters,dev_clusters,K*cols*sizeof(double),cudaMemcpyDeviceToHost));
