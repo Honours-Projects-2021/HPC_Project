@@ -58,7 +58,7 @@ int main(int argc, char *argv[]){
     }
 
     
-
+    clock_t start = clock();
 
     // Running the algorithm here... Time from here
     for(int z = 0; z < EPOCHS; z++){
@@ -144,20 +144,23 @@ int main(int argc, char *argv[]){
 
     // End timer here 
     if(rank == 0){
-        
         displayCentroids(centroids,numFeatures);
+        clock_t end = clock() - start;
+        double timelapsed = ((double)end)/CLOCKS_PER_SEC;
+        printf("\nThe MPI parallel time for Fuzzy C Means in  miliseconds is %fms for %d epochs\n", timelapsed*1000,EPOCHS );
     }
     MPI_Finalize();
     return 0;
 }
+
 void displayCentroids(vector<double> cent, int NumFeatures){
     for(int i = 0; i < CENTROIDS; i++){
         cout << "cluster "<<i+1<<" [ ";
         for(int j = 0; j < NumFeatures; j++){
             if(j != NumFeatures-1)
-                printf("%f, ",cent[i*CENTROIDS +j]); 
+                printf("%f, ",cent[i*NumFeatures +j]); 
             else
-                printf("%f ]\n",cent[i*CENTROIDS +j]);
+                printf("%f ]\n",cent[i*NumFeatures +j]);
 
         }
     }

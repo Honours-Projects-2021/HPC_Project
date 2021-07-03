@@ -23,11 +23,14 @@ int main(){
     d.getFlat();
     // create fuzzy means
     Fuzzy f = Fuzzy(d.getData(),w.getData(),CLASSES,FMEASURE);
+    clock_t start = clock();
 
     f.run_fuzzy_c_means(EPOCHS); // run the algorithm for a number of epochs
-    // f.display_weights(100);
-    // cout<<endl<<"===========================================================================================";
-    // cout<<endl<<"==========================================================================================="<<endl;
-    d.displayFlat();
+    
+    clock_t end = clock() - start;
+    double timelapsed = ((double)end)/CLOCKS_PER_SEC;
+    printf("The serial time for Fuzzy C Means in  miliseconds is %fms for %d epochs\n", timelapsed*1000,EPOCHS );
+
+    // d.displayFlat();
     return 0;
 }

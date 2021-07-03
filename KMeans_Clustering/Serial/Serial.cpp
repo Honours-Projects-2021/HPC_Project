@@ -1,3 +1,5 @@
+#include <bits/types/clock_t.h>
+#include <bits/types/time_t.h>
 #include <cstdio>
 #include <iostream>
 #include <vector>
@@ -50,7 +52,7 @@ void displayDistance(vector<vector<double>> distances){
     printf("\n");
 
 }
-
+ 
 void initAssigns(vector<int> *assigns, int rows){
     for(int i = 0; i < rows; i++){
         assigns->push_back(0);
@@ -83,6 +85,7 @@ int main(int argc, char **argv){
 
     displayClusters(clusters);
 
+    clock_t start = clock();
     // Run for the algorithm from here for a number of epochs
     for(int z = 0; z < EPOCHS; z++){
 
@@ -120,7 +123,12 @@ int main(int argc, char **argv){
 
     }
 
+    clock_t end = clock() - start;
+    double timelapsed = ((double)end)/CLOCKS_PER_SEC;
     displayClusters(clusters);
+    printf("The serial time for K Means in  miliseconds is %fms for %d epochs\n", timelapsed*1000,EPOCHS );
+
+
 
     return 0;
 }
