@@ -1,9 +1,6 @@
-
-run: MPIKMeans.o
-	mpic++ MPIKMeans.o -o run
-    
-MPIKMeans.o: MPIKMeans.cpp
-	mpic++ -c MPIKMeans.cpp
-    
+CC=mpic++
+all:	run
+run:	MPIKMeans.cpp
+	$(CC) MPIKMeans.cpp -o run
 clean:
-	rm *.o run
+	rm run

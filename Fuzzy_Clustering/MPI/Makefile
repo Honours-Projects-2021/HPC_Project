@@ -1,8 +1,5 @@
-run: FuzzyMPI.o
-	mpic++ FuzzyMPI.o -o run
-    
-FuzzyMPI.o: FuzzyMPI.cpp
-	mpic++ -c FuzzyMPI.cpp
-    
+CC=mpic++
+run:	FuzzyMPI.cpp
+	$(CC) FuzzyMPI.cpp -o run
 clean:
-	rm *.o run
+	rm run

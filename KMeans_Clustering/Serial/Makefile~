@@ -1,9 +1,6 @@
-
-run: Serial.o
-	g++ Serial.o -o run
-    
-Serial.o: Serial.cpp
-	g++ -c Serial.cpp
-    
+CC=g++
+all:	run
+run:	Serial.cpp
+	$(CC) Serial.cpp -o run
 clean:
-	rm *.o run
+	rm run
