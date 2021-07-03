@@ -88,7 +88,7 @@ int main(int argc, char *argv[]){
     if(rank == numProc-1){
         chunksize += rows - myrows*numProc;
     }
-
+    clock_t start = clock();
     // printf("ID: %d, my number of rows is %d, my index is %d, my chuncksize is %d\n",rank, myrows,idx,chunksize);
     for(int z = 0; z < EPOCHS; z++){
         
@@ -176,13 +176,15 @@ int main(int argc, char *argv[]){
     if(rank == MASTER){
         // displayAssigns(assigns, rows);
 
-        printf("\n");
         displayCentroids(clusters,cols);
-
+        printf("\n");
+        clock_t end = clock() - start;
+        double timelapsed = ((double)end)/CLOCKS_PER_SEC;
+        printf("\nThe MPI parallel time for Fuzzy C Means in  miliseconds is %fms for %d epochs\n\n", timelapsed*1000,EPOCHS );
         // displayDistances(distances,rows);
     }
     
-    MPI_Finalize();
+    MPI_Finalize(); 
 
     free(clusters);
     free(distances);
