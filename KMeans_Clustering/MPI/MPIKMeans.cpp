@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <iostream>
 #include <stdio.h>
 #include <vector>
@@ -8,9 +9,14 @@
 
 #define MASTER 0
 #define K 3
-#define EPOCHS 500
+#define EPOCHS 200
 using namespace std;
 
+void displayAssigns(int * assigns, int rows){
+    for(int i = 0; i < rows; i++){
+        printf("%d --- ", assigns[i]);
+    }
+}
 
 void displayCentroids(double* cent, int NumFeatures){
     for(int i = 0; i < K; i++){
@@ -68,14 +74,11 @@ int main(int argc, char *argv[]){
     initCentroids(data, clusters,cols,rows);
     // displayCentroids(clusters,cols);
   
-    int numProc, rank, len;
-    char hostname[MPI_MAX_PROCESSOR_NAME];
-
+    int numProc, rank;
 
     MPI_Init( &argc , &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &numProc);
     MPI_Comm_rank(MPI_COMM_WORLD , &rank);
-    MPI_Get_processor_name( hostname , &len);
     MPI_Status status,status2;
     MPI_Request request;
 
@@ -86,52 +89,97 @@ int main(int argc, char *argv[]){
         chunksize += rows - myrows*numProc;
     }
 
-    printf("ID: %d, my number of rows is %d, my index is %d, my chuncksize is %d\n",rank, myrows,idx,chunksize);
+    // printf("ID: %d, my number of rows is %d, my index is %d, my chuncksize is %d\n",rank, myrows,idx,chunksize);
+    for(int z = 0; z < EPOCHS; z++){
+        
+        for(int i = idx; i < idx+chunksize; i++){
+            double sum = 100000;
+            for(int j = 0; j < K; j++){
+                
+                distances[i*K+j] = 0;
+                for(int k = 0; k < cols; k++){
+                    distances[i*K+j] += pow(data[i*cols+k]-clusters[j*cols +k],2);
+                }
 
-    for(int i = idx; i < idx+chunksize; i++){
-        double sum = 100000;
-        for(int j = 0; j < K; j++){
-            
-            distances[i*K+j] = 0;
-            for(int k = 0; k < cols; k++){
-                distances[i*K+j] += pow(-data[i*cols+j]+clusters[j*K +k],2);
-            }
+                distances[i*K+j] = sqrt(distances[i*K+j]);
 
-            distances[i*K+j] = sqrt(distances[i*K+j]);
-
-            if(distances[i*K+j] < sum){
-                assigns[i] = j;
-                sum = distances[i*K+j];
+                if(distances[i*K+j] < sum){
+                    assigns[i] = j;
+                    sum = distances[i*K+j];
+                }
             }
         }
+
+        if(rank != MASTER){
+            MPI_Send( &distances[idx*K] , chunksize*K , MPI_DOUBLE , MASTER , 1 , MPI_COMM_WORLD);
+            MPI_Send( &assigns[idx] , chunksize, MPI_INT, MASTER , 2 , MPI_COMM_WORLD);
+        }
+        else if(numProc>1){
+            for(int i = 1; i < numProc-1; i++){
+                MPI_Recv( &distances[i*myrows*K] , chunksize*K, MPI_DOUBLE , i , 1, MPI_COMM_WORLD , &status);
+                MPI_Recv( &assigns[i*myrows] , chunksize , MPI_INT , i , 2 , MPI_COMM_WORLD , &status2);
+
+            } 
+
+            MPI_Recv( &distances[(numProc-1)*myrows*K] , (rows+rows - myrows*numProc)*K , MPI_DOUBLE , numProc-1 , 1 , MPI_COMM_WORLD , &status);
+            MPI_Recv( &assigns[(numProc-1)*myrows] , (rows + rows - myrows*numProc) , MPI_INT , numProc-1 , 2 , MPI_COMM_WORLD , &status2);
+
+        }
+
+        
+
+        MPI_Bcast( &distances[0] , K*rows , MPI_DOUBLE , MASTER , MPI_COMM_WORLD);  
+        MPI_Bcast( &assigns[0] , rows , MPI_INT , MASTER , MPI_COMM_WORLD);  
+        // MPI_Barrier( MPI_COMM_WORLD);
+
+        if(rank < K){
+
+            // Each i corresponds to the each cluster
+            for(int c_idx = rank; c_idx < K; c_idx ++){
+                int occurances = 0;
+
+                // reset the clusters to zeros
+                for(int i = 0; i < cols; i++){
+                    clusters[c_idx*cols + i] = 0;
+                }
+
+                // calculate the occurances 
+                for(int i = 0; i < rows; i++){
+                    if(assigns[i] == c_idx){
+                        occurances ++;
+                        for(int j = 0; j< cols; j++){
+                            clusters[c_idx*cols + j] += data[i*cols +j];
+                        }
+                    }
+                }
+
+                // Get the avarage of the clusters
+                for(int i = 0; i < cols; i++){
+                    clusters[c_idx*cols + i] = clusters[c_idx*cols+i]/ occurances;
+                }
+            }
+
+            if(rank != MASTER)
+                MPI_Send( &(clusters[rank*cols]) , cols , MPI_DOUBLE , MASTER , 1 , MPI_COMM_WORLD);
+            else if (numProc > 1){
+                int index = (numProc > 2)?K:numProc;
+                for(int i = 1; i < index; i++){
+                    MPI_Recv( &(clusters[i*cols]) , cols , MPI_DOUBLE , i , 1 , MPI_COMM_WORLD , &status);
+                }
+            }
+
+        }
+
+        MPI_Bcast( &clusters[0] , cols*K , MPI_DOUBLE , MASTER , MPI_COMM_WORLD);
     }
-
-    if(rank != MASTER){
-        MPI_Send( &distances[idx*K] , chunksize*K , MPI_DOUBLE , MASTER , 1 , MPI_COMM_WORLD);
-        // MPI_Send( &assigns[idx] , chunksize, MPI_INT, MASTER , 2 , MPI_COMM_WORLD);
-    }
-    else if(numProc>1){
-        for(int i = 1; i < numProc-1; i++){
-            // MPI_Recv( &distances[i*myrows*K] , chunksize*K, MPI_DOUBLE , i , 1 , MPI_COMM_WORLD , &status);
-            // MPI_Recv( &assigns[i*myrows] , chunksize, MPI_INT , i , 2 , MPI_COMM_WORLD , &status);
-
-            MPI_Recv( &distances[i*myrows*K] , chunksize*K, MPI_DOUBLE , i , i, MPI_COMM_WORLD , &status);
-            // MPI_Recv( &assigns[i*myrows] , chunksize , MPI_INT , i , 2 , MPI_COMM_WORLD , &status2);
-
-        } 
-        MPI_Recv( &distances[(numProc-1)*myrows*K] , (rows+rows - myrows*numProc)*K , MPI_DOUBLE , numProc-1 , 1 , MPI_COMM_WORLD , &status);
-        // MPI_Recv( &assigns[(numProc-1)*myrows] , (2*chunksize + rows - myrows*numProc)*K , MPI_INT , numProc-1 , 2 , MPI_COMM_WORLD , &status2);
-
-    }
-
-    
-
-    // MPI_Bcast( &distances[0] , K*rows , MPI_DOUBLE , MASTER , MPI_COMM_WORLD);  
-    // MPI_Bcast( &assigns[0] , rows , MPI_INT , MASTER , MPI_COMM_WORLD);  
-    // MPI_Barrier( MPI_COMM_WORLD);
 
     if(rank == MASTER){
-        displayDistances(distances,rows);
+        // displayAssigns(assigns, rows);
+
+        printf("\n");
+        displayCentroids(clusters,cols);
+
+        // displayDistances(distances,rows);
     }
     
     MPI_Finalize();
