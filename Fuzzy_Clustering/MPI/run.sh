@@ -1,3 +1,1 @@
-make
-./run
-mpiexec -n 8 
+mpiexec -n 8 ./run 
