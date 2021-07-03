@@ -20,10 +20,13 @@ void displayAssigns(int * assigns, int rows){
 
 void displayCentroids(double* cent, int NumFeatures){
     for(int i = 0; i < K; i++){
+        cout<<"cluster "<<i+1<<"[ "; 
         for(int j = 0; j < NumFeatures; j++){
-            printf("%.3f   ",cent[i*NumFeatures +j]); 
+            if(j != NumFeatures-1)
+                printf("%f, ",cent[i*NumFeatures +j]);
+            else
+                printf("%f ]\n",cent[i*NumFeatures +j]); 
         }
-        printf("\n");
     }
 }
 

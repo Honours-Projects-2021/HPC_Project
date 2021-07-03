@@ -140,6 +140,7 @@ void Fuzzy::compute_weights(vector<vector<double>> *W){
 // Display the weights for the first n data points
 void Fuzzy::display_weights(int n){
     for(int i = 0; i < n; i++){
+        
         for(int j = 0; j < weights.at(0).size(); j++){
             printf("%.5f ",weights.at(i).at(j));
         }

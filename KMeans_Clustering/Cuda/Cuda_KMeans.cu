@@ -1,3 +1,4 @@
+#include <__clang_cuda_runtime_wrapper.h>
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -24,10 +25,14 @@ __device__ double Round(double c){
 
 void displayCentroids(double* cent, int NumFeatures){
     for(int i = 0; i < K; i++){
+        cout << "cluster "<< i+1 <<" [ ";
         for(int j = 0; j < NumFeatures; j++){
-            printf("%f   ",cent[i*NumFeatures +j]); 
+            if(j != NumFeatures-1)
+                printf("%f, ",cent[i*NumFeatures +j]);
+            else
+                printf("%f ]",cent[i*NumFeatures +j]); 
         }
-        printf("\n");
+        // printf("\n");
     }
 }
 
