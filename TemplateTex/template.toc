@@ -1,0 +1,16 @@
+\babel@toc {english}{}
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Problem Statement}{1}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Methodology}{1}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Algorithms}{1}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}K-Means Clustering}{1}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.2}Fuzzy-C Means}{1}{subsubsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.2}Solution implementations}{2}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Serial Implementation}{2}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}MPI Parallel Implementation}{2}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}CUDA Parallel Implementation}{3}{subsubsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.3}Evaluation Methods}{3}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Experimental Setup}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Dataset Description}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Performance Evaluation Approaches}{3}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Results and Discusions}{4}{section.4}%

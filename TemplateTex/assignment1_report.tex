@@ -17,6 +17,8 @@
 %\vskip 3mm 
 %\pagenumbering{roman}
 \newpage
+\tableofcontents
+\newpage
 \pagenumbering{arabic} 
 
 \begin{multicols*}{2}
@@ -98,12 +100,37 @@
     In the second phase, every thread in the program does approximately the same amount of work depending on whether the data points could be split evenly across the available threads. If the data can not be split evenly, the last thread takes the remainder of the data points.  Each thread then calculates the coefficients of each data point. Upon calculation, every thread sends its chunk to the MASTER thread and the MASTER thread broadcasts the results back to all the threads. At this point, the program is ready to move on to the next iteration.
 
     \subsubsection{CUDA Parallel Implementation}
+    The beauty of CUDA is that we have the power to assign each independent piece of work to a dedicated thread or processor. In addition to the above superpower, We have the privilege of updating a shared memory buffer. We, therefore, hope that the CUDA implementation will give us the best performance.
+
+    \textbf{K-Means}
+    
+    Initially, we wanted to dedicate a block of threads with threads equalling the number of observations in our dataset. Each block would then be dedicated to each cluster. Because we couldn't find the problem we were facing, we resorted to using one block running $c$ times, where $c$ is the number of clusters. For each cluster  $c$,  there are $n$ threads, each thread calculates the distance of its assigned data point to all clusters and assigns that data point to the appropriate cluster. Since the updates are on the shared memory, no communications are done here. This marks the end of phase one.
+
+    In the second phase, we calculate the centroids, again, we would have loved to dedicate a separate block for each cluster, due to time we couldn't, this was, however, not a complete train smash as we were still able to parallelize the second phase. Since we are iterating through the buffer that stores data about data points being assigned to clusters, We only use $c$ threads among thousands available to us. Each thread recomputes the centroid. Upon completion, the program is ready to move to the next iteration.
+
+    \textbf{Fuzzy C-Means}
+
+    You probably already know what goes on in this section.  In the first phase, we dedicate $c$ number of threads to compute the centroids given the coefficient matrix. Upon centroid recomputation, we move to the next phase. 
+
+    In the second phase, we make use of $n$ threads, where $n$ is the number of observations. Each thread calculates the coefficients of the assigned data point for all clusters. Upon coefficient recomputation, the program is ready to move to the next iteration.
+
+    \subsection{Evaluation Methods}
+
+    We tested for two things in all our implementations, correctness and performance. We measured the performance in milliseconds. The measure of correctness was dependent on initializations. I believe we've discussed the approach we took in trying to measure correctness. 
+
+    \section{Experimental Setup}
+
+    \subsection{Dataset Description}
+    The dataset used here is used here is taken from \href{https://archive.ics.uci.edu/ml/datasets/wine}{ UCI Repository},
+
+    The data set contains 178 observations and 13 features.  This Dataset is owned by Forina, M. et al, PARVUS, and donated by Stephen Aeberhard. It was donated in the year 1991. The data consists of no missing values and it contains integers and real numbers. The features describe the quality of the wine. The features are alcohol level, Malic acid, Ash, Alkalinity of the Ash, Magnesium level, total phenols, non-flavonoid phenols, Proanthocyanins, Color intensity, Hue, property of diluted wines, and Proline. The data set is compiled to specifically classify the origin of the wine out of 3 regions. To stay as professional as possible, we kept the number of clusters fixed to 3.
+
+    \subsection{Performance Evaluation Approaches}
+    
+    We measured performance primarily as a function of the number of epochs. One interesting factor we could have considered was the number of clusters we could have used, but we however stuck to using only three as specified by the providers of the dataset.We only measure the performance of the parts that run the algorithm. The initializations, as well as the finalizations, are not included in the results that we are going to discuss below.
 
 
-
-
-
-
+    \section{Results and Discusions}
 
 
 

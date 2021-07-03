@@ -8,3 +8,8 @@
 \BOOKMARK [3][-]{subsubsection.2.2.1}{Serial Implementation}{subsection.2.2}% 8
 \BOOKMARK [3][-]{subsubsection.2.2.2}{MPI Parallel Implementation}{subsection.2.2}% 9
 \BOOKMARK [3][-]{subsubsection.2.2.3}{CUDA Parallel Implementation}{subsection.2.2}% 10
+\BOOKMARK [2][-]{subsection.2.3}{Evaluation Methods}{section.2}% 11
+\BOOKMARK [1][-]{section.3}{Experimental Setup}{}% 12
+\BOOKMARK [2][-]{subsection.3.1}{Dataset Description}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.2}{Performance Evaluation Approaches}{section.3}% 14
+\BOOKMARK [1][-]{section.4}{Results and Discusions}{}% 15
