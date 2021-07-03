@@ -9,7 +9,7 @@
 
 #define MASTER 0
 #define K 3
-#define EPOCHS 500
+#define EPOCHS 10
 using namespace std;
 
 void displayAssigns(int * assigns, int rows){
@@ -183,7 +183,7 @@ int main(int argc, char *argv[]){
         printf("\n");
         clock_t end = clock() - start;
         double timelapsed = ((double)end)/CLOCKS_PER_SEC;
-        printf("\nThe MPI parallel time for Fuzzy C Means in  miliseconds is %fms for %d epochs\n\n", timelapsed*1000,EPOCHS );
+        printf("\nThe MPI parallel time for  K-Means in  miliseconds is %fms for %d epochs\n\n", timelapsed*1000,EPOCHS );
         // displayDistances(distances,rows);
     }
     

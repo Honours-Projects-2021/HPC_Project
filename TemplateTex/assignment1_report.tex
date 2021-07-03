@@ -131,7 +131,26 @@
 
 
     \section{Results and Discusions}
+    \subsection{K-Means}
+    Below are the results stored in the table format for different implementations.
+    
 
+    \begin{tabular}{ |p{2cm}||p{1.2cm}|p{1.2cm}|p{1.2cm}|  }
+        \hline
+        \multicolumn{4}{|c|}{K Means Performance Measure in ms} \\
+        \hline
+        algorithm& 10 Epochs &100 Epochs&500 Epochs\\
+        \hline
+        Serial  &  8.248    &    83.23   &  383.636 \\
+        MPI(8)     &   2.708    &    13.107   & 57.255  \\
+        CUDA    &       &       &   \\
+        \hline
+    \end{tabular}
+
+    Above is the table for result the algorithm after different epochs. The $8$ brackets for MPI means that it was run on $8$ threads.
+
+
+    \subsection{Fuzzy C-Means}
 
 
 

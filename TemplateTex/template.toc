@@ -14,3 +14,5 @@
 \contentsline {subsection}{\numberline {3.1}Dataset Description}{3}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Performance Evaluation Approaches}{3}{subsection.3.2}%
 \contentsline {section}{\numberline {4}Results and Discusions}{4}{section.4}%
+\contentsline {subsection}{\numberline {4.1}K-Means}{4}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Fuzzy C-Means}{4}{subsection.4.2}%

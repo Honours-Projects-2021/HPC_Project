@@ -10,7 +10,7 @@
 #include "../Utils/Util.h"
 
 #define K 3
-#define EPOCHS  500
+#define EPOCHS  10
 
 using namespace std;
 
@@ -87,7 +87,7 @@ int main(int argc, char **argv){
     initDistances(d, &distances);
     initAssigns(&assigns, rows);
 
-    displayClusters(clusters);
+    // displayClusters(clusters);
 
     clock_t start = clock();
     // Run for the algorithm from here for a number of epochs
