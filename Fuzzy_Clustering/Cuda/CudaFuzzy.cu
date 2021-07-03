@@ -28,9 +28,9 @@ void displayCentroids(double* cent, int NumFeatures){
         cout << "cluster "<<i+1<<" [ ";
         for(int j = 0; j < NumFeatures; j++){
             if(j != NumFeatures-1)
-                printf("%f, ",cent[i*NUMCENTS +j]); 
+                printf("%f, ",cent[i*NumFeatures +j]); 
             else
-                printf("%f ]\n",cent[i*NUMCENTS +j]);
+                printf("%f ]\n",cent[i*NumFeatures +j]);
 
         }
     }
@@ -193,13 +193,6 @@ int main(){
     checkCudaErrors(cudaMemcpy(weights, deviceWeights ,  weightSize, cudaMemcpyDeviceToHost));
 
 
-    // for(int i = 0; i < 100; i++){
-    //     for(int j = 0; j < 3; j++){
-    //         printf("%.5f " ,weights[i*NUMCENTS + j]);
-    //     }
-    //     printf("\n");
-    // }
-    // printf("\n");
     
     displayCentroids(centroids,dataColumns);
     // free acquried Device memory

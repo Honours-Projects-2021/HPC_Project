@@ -25,7 +25,7 @@ __device__ double Round(double c){
 void displayCentroids(double* cent, int NumFeatures){
     for(int i = 0; i < K; i++){
         for(int j = 0; j < NumFeatures; j++){
-            printf("%.3f   ",cent[i*NumFeatures +j]); 
+            printf("%f   ",cent[i*NumFeatures +j]); 
         }
         printf("\n");
     }
