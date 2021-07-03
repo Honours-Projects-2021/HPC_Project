@@ -9,7 +9,7 @@
 
 #define MASTER 0
 #define K 3
-#define EPOCHS 200
+#define EPOCHS 500
 using namespace std;
 
 void displayAssigns(int * assigns, int rows){
