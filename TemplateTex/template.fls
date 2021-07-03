@@ -431,6 +431,17 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/rsfs/rsfs10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
 INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/times/ptmr8c.vf
+INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/times/zptmcm7m.vf
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/psyro.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmri8r.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/times/zptmcm7t.vf
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/times/zptmcm7y.vf
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/rsfs/rsfs10.tfm
 INPUT /home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.aux
 INPUT /home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.out
 INPUT /home/beast/Documents/School/Honors/HPC/Project/TemplateTex/template.out
