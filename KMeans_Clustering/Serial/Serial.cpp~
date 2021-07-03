@@ -10,7 +10,7 @@
 #include "../Utils/Util.h"
 
 #define K 3
-#define EPOCHS  500
+#define EPOCHS  10
 
 using namespace std;
 
@@ -86,6 +86,7 @@ int main(int argc, char **argv){
     initClusters(d, &clusters);
     initDistances(d, &distances);
     initAssigns(&assigns, rows);
+
 
     //displayClusters(clusters);
 
