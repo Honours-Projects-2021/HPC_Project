@@ -9,7 +9,7 @@
 
 #define MASTER 0
 #define K 3
-#define EPOCHS 10
+#define EPOCHS 500
 using namespace std;
 
 void displayAssigns(int * assigns, int rows){
@@ -20,13 +20,10 @@ void displayAssigns(int * assigns, int rows){
 
 void displayCentroids(double* cent, int NumFeatures){
     for(int i = 0; i < K; i++){
-        cout<<"cluster "<<i+1<<"[ "; 
         for(int j = 0; j < NumFeatures; j++){
-            if(j != NumFeatures-1)
-                printf("%f, ",cent[i*NumFeatures +j]);
-            else
-                printf("%f ]\n",cent[i*NumFeatures +j]); 
+            printf("%.3f   ",cent[i*NumFeatures +j]); 
         }
+        printf("\n");
     }
 }
 
@@ -185,7 +182,7 @@ int main(int argc, char *argv[]){
         printf("\n");
         clock_t end = clock() - start;
         double timelapsed = ((double)end)/CLOCKS_PER_SEC;
-        printf("\nThe MPI parallel time for  K-Means in  miliseconds is %fms for %d epochs\n\n", timelapsed*1000,EPOCHS );
+        printf("\nThe MPI parallel time for Fuzzy C Means in  miliseconds is %fms for %d epochs\n\n", timelapsed*1000,EPOCHS );
         // displayDistances(distances,rows);
     }
     
