@@ -154,7 +154,7 @@ int main(){
     }
 
     sdkStopTimer(&se_timer);
-    printf("Processing time for Cuda Parallel: %f (ms)\n", sdkGetTimerValue(&se_timer));
+    printf("The Cuda Parallel time to run K Means in second is  %f (ms) for %d epochs\n", sdkGetTimerValue(&se_timer),EPOCHS);
     sdkDeleteTimer(&se_timer);
 
     checkCudaErrors(cudaMemcpy(clusterAssigns,dev_Assigns,rows*sizeof(int),cudaMemcpyDeviceToHost));
@@ -163,12 +163,6 @@ int main(){
 
     printf("\n = ============================================================== = \n\n");
     displayCentroids(clusters , cols);
-    
-    // for(int i = 0; i < rows; i++){
-    //     printf("%d -- ",clusterAssigns[i]);
-    // }
-    // printf("\n\n");
-    // displayDistances(distances,rows);
 
 
 
