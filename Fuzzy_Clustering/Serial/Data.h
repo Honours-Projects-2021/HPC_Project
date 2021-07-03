@@ -1,6 +1,7 @@
 #ifndef DATA
 #define DATA
 
+#include <cstdio>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -30,6 +31,7 @@ class Data{
         void flat();
         vector<vector<double>> getData();
         vector<double> getFlat();
+        void displayFlat();
 
 
 
@@ -57,6 +59,16 @@ vector<double> Data::getFlat(){
     flat();
     return flatD;
 }
+
+void Data::displayFlat(){
+    for(int i = 0; i < numCols*numRows; i++){
+        if(i%numCols == 0){
+            printf("\n");
+        }
+        printf("%f ", flatD[i]);
+    }
+}
+
 void Data::display(){
     int n = numRows;
     int m = numCols;

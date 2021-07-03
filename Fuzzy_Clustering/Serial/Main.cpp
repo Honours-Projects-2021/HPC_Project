@@ -20,14 +20,14 @@ int main(){
     // Import the dataset and the randomly initialized weights
     Data d = Data("../Utils/wine-clustering.csv");
     Data w = Data("../Utils/weights.csv");
-
+    d.getFlat();
     // create fuzzy means
     Fuzzy f = Fuzzy(d.getData(),w.getData(),CLASSES,FMEASURE);
 
     f.run_fuzzy_c_means(EPOCHS); // run the algorithm for a number of epochs
-    f.display_weights(100);
+    // f.display_weights(100);
     // cout<<endl<<"===========================================================================================";
     // cout<<endl<<"==========================================================================================="<<endl;
-
+    d.displayFlat();
     return 0;
 }
